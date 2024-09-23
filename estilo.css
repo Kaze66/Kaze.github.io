@@ -1,0 +1,36 @@
+.caja{
+    width: 100px;
+    height: 100px;
+    padding: 30px;
+    margin: 10px;
+    border: 25px solid blue;
+}
+
+.cubo{
+    width: 100px;
+    height: 100px;
+    padding: 30px;
+    margin: 10px;
+    border: 25px solid greenyellow;
+}
+.contenedor{
+    display: flex;
+    justify-content: space-around;
+}
+
+.item{
+    width: 50%;
+    height: 50px;
+    background-color: aqua;
+}
+
+.grid-container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+}
+
+.grid-item{
+    background-color: yellow;
+    padding: 10px;
+}
