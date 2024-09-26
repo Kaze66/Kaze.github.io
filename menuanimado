@@ -1,0 +1,29 @@
+    <h2>Menu</h2>
+    <div class="wrapper">
+        <div class="slider">
+            <div class="slides">
+                <div class="slide" id="slide1">
+                    <img src="css/imagenes/Escargots.png" alt="Escargots">
+                    <div class="caption">Plato vegetariano</div>
+                </div>
+                <div class="slide" id="slide2">
+                    <img src="css/imagenes/principal.jpg" alt="Principal">
+                    <div class="caption">Plato de carne</div>
+                </div>
+                <div class="slide" id="slide3">
+                    <img src="css/imagenes/postre.jpg" alt="Postre">
+                    <div class="caption">Plato de mariscos</div>
+                </div>
+            </div>
+            <div class="slider-controler">
+                <ul>
+                    <li><a href="#slide1" class="circle-button"></a></li>
+                    <li><a href="#slide2" class="circle-button"></a></li>
+                    <li><a href="#slide3" class="circle-button"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    
+</section>
