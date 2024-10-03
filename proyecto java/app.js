@@ -1,9 +1,9 @@
-let edad=50;
-if(edad < 18){
-    console.log("Eres  menor de edad");
-}else if (edad >=18 && edad <65){
-    console.log("Eres adulto");
-}else{
-    console.log("Eres mayor")
+let elemento=document.getElementById("miElemento");
+        console.log(elemento);
+        elemento.textContent="esto es javascript";
+        elemento.style="color:red";
+
+validaform(){
+    alert("esto es javascript")
 }
 
