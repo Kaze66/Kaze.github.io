@@ -9,32 +9,32 @@ const cartasArray = [
     { name: 'fresa', img: 'https://via.placeholder.com/100?text=Strawberry' }
 ];
 
-// Duplicar el array para obtener parejas
+
 let tableroJuego = [...cartasArray, ...cartasArray];
 
-// Barajar el tablero
+
 tableroJuego.sort(() => 0.5 - Math.random());
 
-// Crear el tablero de juego
-const contenedorJuego = document.getElementById('tablero-juego');
 
-// Variables para hacer seguimiento del estado del juego
+const contenedorJuego = document.getElementById('game-board');
+
+ 
 let primeraCarta = null;
 let segundaCarta = null;
 let bloqueoTablero = false;
 
 tableroJuego.forEach(item => {
-    // Crear los elementos de las cartas
+
     const carta = document.createElement('div');
-    carta.classList.add('carta');
+    carta.classList.add('card');
     carta.dataset.name = item.name;
 
-    // Añadir la imagen dentro de la carta
+    
     const caraFrontal = document.createElement('img');
     caraFrontal.src = item.img;
     carta.appendChild(caraFrontal);
 
-    // Añadir evento de clic a cada carta
+    
     carta.addEventListener('click', voltearCarta);
 
     contenedorJuego.appendChild(carta);
@@ -44,7 +44,7 @@ function voltearCarta() {
     if (bloqueoTablero) return;
     if (this === primeraCarta) return; // Evitar hacer clic dos veces en la misma carta
 
-    this.classList.add('volteada');
+    this.classList.add('flipped');
 
     if (!primeraCarta) {
         primeraCarta = this;
@@ -73,8 +73,8 @@ function desactivarCartas() {
 function desvoltearCartas() {
     bloqueoTablero = true;
     setTimeout(() => {
-        primeraCarta.classList.remove('volteada');
-        segundaCarta.classList.remove('volteada');
+        primeraCarta.classList.remove('flipped');
+        segundaCarta.classList.remove('flipped');
         reiniciarTablero();
     }, 1000);
 }
