@@ -1,0 +1,100 @@
+const cartasArray = [
+    { nombre: 'manzana', img: 'https://via.placeholder.com/100?text=Apple' },
+    { nombre: 'platano', img: 'https://via.placeholder.com/100?text=Banana' },
+    { nombre: 'cereza', img: 'https://via.placeholder.com/100?text=Cherry' },
+    { nombre: 'uva', img: 'https://via.placeholder.com/100?text=Grape' },
+    { nombre: 'limon', img: 'https://via.placeholder.com/100?text=Lemon' },
+    { nombre: 'naranja', img: 'https://via.placeholder.com/100?text=Orange' },
+    { nombre: 'pera', img: 'https://via.placeholder.com/100?text=Pear' },
+    { nombre: 'fresa', img: 'https://via.placeholder.com/100?text=Strawberry' }
+];
+
+// Duplicar las cartas para crear las parejas
+let tableroJuego = [...cartasArray, ...cartasArray];
+
+// Barajar las cartas
+tableroJuego.sort(() => 0.5 - Math.random());
+
+// Crear el tablero de juego
+const contenedorJuego = document.getElementById('tablero-juego');
+
+// Variables del estado del juego
+let primeraCarta = null;
+let segundaCarta = null;
+let bloqueoTablero = false;
+
+// Generar las cartas en el tablero
+tableroJuego.forEach(item => {
+    // Crear el elemento de la carta
+    const carta = document.createElement('div');
+    carta.classList.add('carta');
+    carta.dataset.nombre = item.nombre;
+
+    // Añadir la imagen dentro de la carta
+    const caraFrontal = document.createElement('img');
+    caraFrontal.src = item.img;
+    carta.appendChild(caraFrontal);
+
+    // Añadir la carta al tablero
+    contenedorJuego.appendChild(carta);
+});
+
+// Voltear todas las cartas al inicio y luego ocultarlas
+function mostrarCartasAlInicio() {
+    const cartas = document.querySelectorAll('.carta');
+    
+    // Voltear todas las cartas para mostrar la imagen
+    cartas.forEach(carta => {
+        carta.classList.add('volteada');
+    });
+
+    // Después de 3 segundos, tapar todas las cartas
+    setTimeout(() => {
+        cartas.forEach(carta => {
+            carta.classList.remove('volteada');
+            carta.addEventListener('click', voltearCarta); // Añadir el evento de clic después de tapar las cartas
+        });
+    }, 3000); // 3000 milisegundos = 3 segundos
+}
+
+// Llamar a la función para mostrar las cartas al inicio
+mostrarCartasAlInicio();
+
+function voltearCarta() {
+    if (bloqueoTablero) return;
+    if (this === primeraCarta) return; // Evitar doble clic en la misma carta
+
+    this.classList.add('volteada');
+
+    if (!primeraCarta) {
+        primeraCarta = this;
+    } else {
+        segundaCarta = this;
+        verificarCoincidencia();
+    }
+}
+
+function verificarCoincidencia() {
+    let esCoincidencia = primeraCarta.dataset.nombre === segundaCarta.dataset.nombre;
+
+    esCoincidencia ? desactivarCartas() : desvoltearCartas();
+}
+
+function desactivarCartas() {
+    primeraCarta.removeEventListener('click', voltearCarta);
+    segundaCarta.removeEventListener('click', voltearCarta);
+    reiniciarTablero();
+}
+
+function desvoltearCartas() {
+    bloqueoTablero = true;
+    setTimeout(() => {
+        primeraCarta.classList.remove('volteada');
+        segundaCarta.classList.remove('volteada');
+        reiniciarTablero();
+    }, 1000);
+}
+
+function reiniciarTablero() {
+    [primeraCarta, segundaCarta, bloqueoTablero] = [null, null, false];
+}
