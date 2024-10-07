@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Memoria</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-    <h1>Juego de Memoria</h1>
+
+    <h1>Cartoon Network</h1>
     <div id="tablero-juego"></div>
 
-    <script src="script.js"></script>
+    <script src="js/test.js"></script>
 </body>
 </html>
 
@@ -20,24 +21,26 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f4f4f4;
+    background-image: url('https://pm1.narvii.com/8222/99d249fb39cd388383a32e104a5e543ce7c64894r1-1920-1080v2_hq.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
-h1 {
-    margin: 20px;
+h1{
+    margin: 35px;
 }
 
 #tablero-juego {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(4, 135px);
     grid-gap: 10px;
     justify-content: center;
 }
 
 .carta {
-    width: 100px;
-    height: 100px;
-    background-color: #888;
+    width: 135px;
+    height: 135px;
+    background-color: #ffffff;
     border-radius: 8px;
     display: flex;
     justify-content: center;
@@ -67,45 +70,47 @@ const cartasArray = [
     { nombre: 'jhonny', img: 'https://shop.aquadigitizing.com/wp-content/uploads/2023/06/johnny-bravo-vector-cartoon-600x629.jpg' }
 ];
 
-// Duplicar las cartas para crear las parejas
+
 let tableroJuego = [...cartasArray, ...cartasArray];
 
-// Barajar las cartas
 tableroJuego.sort(() => 0.5 - Math.random());
 
-// Crear el tablero de juego
 const contenedorJuego = document.getElementById('tablero-juego');
 
-// Variables del estado del juego
 let primeraCarta = null;
 let segundaCarta = null;
 let bloqueoTablero = false;
 
-// Generar las cartas en el tablero
-tableroJuego.forEach(item => {
-    // Crear el elemento de la carta
+tableroJuego.forEach(item => {    
     const carta = document.createElement('div');
     carta.classList.add('carta');
     carta.dataset.nombre = item.nombre;
-
-    // Añadir la imagen dentro de la carta
     const caraFrontal = document.createElement('img');
     caraFrontal.src = item.img;
     carta.appendChild(caraFrontal);
-
-    // Añadir evento de clic
-    carta.addEventListener('click', voltearCarta);
-
-    // Añadir la carta al tablero
     contenedorJuego.appendChild(carta);
 });
 
+
+function mostrarCartasAlInicio() {
+    const cartas = document.querySelectorAll('.carta');
+    cartas.forEach(carta => {
+        carta.classList.add('volteada');
+    });
+    setTimeout(() => {
+        cartas.forEach(carta => {
+            carta.classList.remove('volteada');
+            carta.addEventListener('click', voltearCarta); 
+        });
+    }, 3000); 
+}
+
+mostrarCartasAlInicio();
+
 function voltearCarta() {
     if (bloqueoTablero) return;
-    if (this === primeraCarta) return; // Evitar doble clic en la misma carta
-
+    if (this === primeraCarta) return;
     this.classList.add('volteada');
-
     if (!primeraCarta) {
         primeraCarta = this;
     } else {
@@ -136,5 +141,5 @@ function desvoltearCartas() {
 }
 
 function reiniciarTablero() {
-    [primeraCarta, segundaCarta, bloqueoTablero] = [null, null, false];
+    [primeraCarta, segundaCarta, bloqueoTablero] = [null, null, false]
 }
