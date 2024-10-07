@@ -28,14 +28,14 @@ h1 {
     margin: 20px;
 }
 
-#game-board {
+#juego-tabla {
     display: grid;
     grid-template-columns: repeat(4, 100px);
     grid-gap: 10px;
     justify-content: center;
 }
 
-.card {
+.carta {
     width: 100px;
     height: 100px;
     background-color: #888;
@@ -46,19 +46,19 @@ h1 {
     cursor: pointer;
 }
 
-.card img {
+.carta img {
     display: none;
     width: 80%;
     height: 80%;
 }
 
-.card.flipped img {
+.carta.flipped img {
     display: block;
 }
 
 <---JavaScript--->
 
-const cardsArray = [
+const cartasArray = [
     { name: 'apple', img: 'https://via.placeholder.com/100?text=Apple' },
     { name: 'banana', img: 'https://via.placeholder.com/100?text=Banana' },
     { name: 'cherry', img: 'https://via.placeholder.com/100?text=Cherry' },
@@ -69,76 +69,70 @@ const cardsArray = [
     { name: 'strawberry', img: 'https://via.placeholder.com/100?text=Strawberry' }
 ];
 
-// Duplicate the array to get pairs
-let gameGrid = [...cardsArray, ...cardsArray];
+let juego1 = [...cartasArray, ...cartasArray];
 
-// Shuffle the gameGrid
-gameGrid.sort(() => 0.5 - Math.random());
+juego1.sort(() => 0.5 - Math.random());
 
-// Create the game board
-const gameBoard = document.getElementById('game-board');
 
-// Variables to keep track of the game state
-let firstCard = null;
-let secondCard = null;
-let lockBoard = false;
+const juegomesa = document.getElementById('juego-mesa');
 
-gameGrid.forEach(item => {
-    // Create card elements
-    const card = document.createElement('div');
-    card.classList.add('card');
-    card.dataset.name = item.name;
+let primeracarta = null;
+let segundacarta = null;
+let tercero = false;
 
-    // Add the image inside the card
-    const frontFace = document.createElement('img');
-    frontFace.src = item.img;
-    card.appendChild(frontFace);
+juego1.forEach(item => {
+    const carta = document.createElement('div');
+    carta.classList.add('card');
+    carta.dataset.name = item.name;
 
-    // Add event listener to each card
-    card.addEventListener('click', flipCard);
+    const caracarta = document.createElement('img');
+    caracarta.src = item.img;
+    carta.appendChild(caracarta);
 
-    gameBoard.appendChild(card);
+    carta.addEventListener('click', caracarta);
+
+    juegomesa.appendChild(card);
 });
 
-function flipCard() {
-    if (lockBoard) return;
-    if (this === firstCard) return; // Prevent double-clicking the same card
+function saltacarta() {
+    if (tercero) return;
+    if (this === primeracarta) return;
 
-    this.classList.add('flipped');
+    this.classList.add('voltear');
 
-    if (!firstCard) {
-        firstCard = this;
+    if (!primeracarta) {
+        primeracarta = this;
     } else {
-        secondCard = this;
-        checkForMatch();
+        segundacarta = this;
+        chequiar();
     }
 }
 
-function checkForMatch() {
-    let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+function chequiar() {
+    let esigual = primeracarta.dataset.name === segundacarta.dataset.name;
 
-    if (isMatch) {
-        disableCards();
+    if (esigual) {
+        disablecartas();
     } else {
-        unflipCards();
+        unflipcartas();
     }
 }
 
-function disableCards() {
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
+function disablecartas() {
+    primeracarta.removeEventListener('click', caracarta);
+    segundacarta.removeEventListener('click', caracarta);
     resetBoard();
 }
 
-function unflipCards() {
-    lockBoard = true;
+function unflipcartas() {
+    tercero = true;
     setTimeout(() => {
-        firstCard.classList.remove('flipped');
-        secondCard.classList.remove('flipped');
-        resetBoard();
+        primeracarta.classList.remove('flipped');
+        segundacarta.classList.remove('flipped');
+        reseteartabla();
     }, 1000);
 }
 
-function resetBoard() {
-    [firstCard, secondCard, lockBoard] = [null, null, false];
+function reseteartabla() {
+    [primeracarta, segundacarta, tercero] = [null, null, false];
 }
