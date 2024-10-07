@@ -80,3 +80,95 @@ function unflipcartas() {
 function reseteartabla() {
     [primeracarta, segundacarta, tercero] = [null, null, false];
 }
+
+
+
+
+
+
+
+
+
+
+const cartasArray = [
+    { name: 'apple', img: 'https://via.placeholder.com/100?text=Apple' },
+    { name: 'banana', img: 'https://via.placeholder.com/100?text=Banana' },
+    { name: 'cherry', img: 'https://via.placeholder.com/100?text=Cherry' },
+    { name: 'grape', img: 'https://via.placeholder.com/100?text=Grape' },
+    { name: 'lemon', img: 'https://via.placeholder.com/100?text=Lemon' },
+    { name: 'orange', img: 'https://via.placeholder.com/100?text=Orange' },
+    { name: 'pear', img: 'https://via.placeholder.com/100?text=Pear' },
+    { name: 'strawberry', img: 'https://via.placeholder.com/100?text=Strawberry' }
+];
+
+let juego1 = [...cartasArray, ...cartasArray];
+
+// Mezcla el juego
+juego1.sort(() => 0.5 - Math.random());
+
+const juegomesa = document.getElementById('juego-mesa');
+
+// Variables para el estado del juego
+let primeracarta = null;
+let segundacarta = null;
+let tercero = false;
+
+juego1.forEach(item => {
+    // Crear las cartas
+    const carta = document.createElement('div');
+    carta.classList.add('card');
+    carta.dataset.name = item.name;
+
+    // Crear la imagen de la carta
+    const caracarta = document.createElement('img');
+    caracarta.src = item.img;
+    carta.appendChild(caracarta);
+
+    // Añadir el evento de clic
+    carta.addEventListener('click', saltacarta);
+
+    juegomesa.appendChild(carta);
+});
+
+function saltacarta() {
+    if (tercero) return;
+    if (this === primeracarta) return; // No permitir clic en la misma carta
+
+    this.classList.add('flipped'); // Voltear la carta
+
+    if (!primeracarta) {
+        primeracarta = this;
+    } else {
+        segundacarta = this;
+        chequiar();
+    }
+}
+
+function chequiar() {
+    let esigual = primeracarta.dataset.name === segundacarta.dataset.name;
+
+    if (esigual) {
+        disablecartas();
+    } else {
+        unflipcartas();
+    }
+}
+
+function disablecartas() {
+    primeracarta.removeEventListener('click', saltacarta);
+    segundacarta.removeEventListener('click', saltacarta);
+    reseteartabla();
+}
+
+function unflipcartas() {
+    tercero = true;
+    setTimeout(() => {
+        primeracarta.classList.remove('flipped');
+        segundacarta.classList.remove('flipped');
+        reseteartabla();
+    }, 1000);
+}
+
+function reseteartabla() {
+    [primeracarta, segundacarta, tercero] = [null, null, false];
+}
