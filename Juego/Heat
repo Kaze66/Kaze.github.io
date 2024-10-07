@@ -1,39 +1,84 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f4f4f4;
+const cartasArray = [
+    { name: 'manzana', img: 'https://via.placeholder.com/100?text=Apple' },
+    { name: 'platano', img: 'https://via.placeholder.com/100?text=Banana' },
+    { name: 'cereza', img: 'https://via.placeholder.com/100?text=Cherry' },
+    { name: 'uva', img: 'https://via.placeholder.com/100?text=Grape' },
+    { name: 'limon', img: 'https://via.placeholder.com/100?text=Lemon' },
+    { name: 'naranja', img: 'https://via.placeholder.com/100?text=Orange' },
+    { name: 'pera', img: 'https://via.placeholder.com/100?text=Pear' },
+    { name: 'fresa', img: 'https://via.placeholder.com/100?text=Strawberry' }
+];
+
+// Duplicar el array para obtener parejas
+let tableroJuego = [...cartasArray, ...cartasArray];
+
+// Barajar el tablero
+tableroJuego.sort(() => 0.5 - Math.random());
+
+// Crear el tablero de juego
+const contenedorJuego = document.getElementById('tablero-juego');
+
+// Variables para hacer seguimiento del estado del juego
+let primeraCarta = null;
+let segundaCarta = null;
+let bloqueoTablero = false;
+
+tableroJuego.forEach(item => {
+    // Crear los elementos de las cartas
+    const carta = document.createElement('div');
+    carta.classList.add('carta');
+    carta.dataset.name = item.name;
+
+    // Añadir la imagen dentro de la carta
+    const caraFrontal = document.createElement('img');
+    caraFrontal.src = item.img;
+    carta.appendChild(caraFrontal);
+
+    // Añadir evento de clic a cada carta
+    carta.addEventListener('click', voltearCarta);
+
+    contenedorJuego.appendChild(carta);
+});
+
+function voltearCarta() {
+    if (bloqueoTablero) return;
+    if (this === primeraCarta) return; // Evitar hacer clic dos veces en la misma carta
+
+    this.classList.add('volteada');
+
+    if (!primeraCarta) {
+        primeraCarta = this;
+    } else {
+        segundaCarta = this;
+        verificarCoincidencia();
+    }
 }
 
-h1 {
-    margin: 20px;
+function verificarCoincidencia() {
+    let esCoincidencia = primeraCarta.dataset.name === segundaCarta.dataset.name;
+
+    if (esCoincidencia) {
+        desactivarCartas();
+    } else {
+        desvoltearCartas();
+    }
 }
 
-#juego-tabla {
-    display: grid;
-    grid-template-columns: repeat(4, 100px);
-    grid-gap: 10px;
-    justify-content: center;
+function desactivarCartas() {
+    primeraCarta.removeEventListener('click', voltearCarta);
+    segundaCarta.removeEventListener('click', voltearCarta);
+    reiniciarTablero();
 }
 
-.carta {
-    width: 100px;
-    height: 100px;
-    background-color: #888;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+function desvoltearCartas() {
+    bloqueoTablero = true;
+    setTimeout(() => {
+        primeraCarta.classList.remove('volteada');
+        segundaCarta.classList.remove('volteada');
+        reiniciarTablero();
+    }, 1000);
 }
 
-.carta img {
-    display: none;
-    width: 80%;
-    height: 80%;
-}
-
-.carta.flipped img {
-    display: block;
+function reiniciarTablero() {
+    [primeraCarta, segundaCarta, bloqueoTablero] = [null, null, false];
 }
