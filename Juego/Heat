@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Memory Game</h1>
+    <div id="game-board"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<---estilos--->
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    margin: 20px;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-gap: 10px;
+    justify-content: center;
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    background-color: #888;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.card img {
+    display: none;
+    width: 80%;
+    height: 80%;
+}
+
+.card.flipped img {
+    display: block;
+}
+
+<---JavaScript--->
+
+const cardsArray = [
+    { name: 'apple', img: 'https://via.placeholder.com/100?text=Apple' },
+    { name: 'banana', img: 'https://via.placeholder.com/100?text=Banana' },
+    { name: 'cherry', img: 'https://via.placeholder.com/100?text=Cherry' },
+    { name: 'grape', img: 'https://via.placeholder.com/100?text=Grape' },
+    { name: 'lemon', img: 'https://via.placeholder.com/100?text=Lemon' },
+    { name: 'orange', img: 'https://via.placeholder.com/100?text=Orange' },
+    { name: 'pear', img: 'https://via.placeholder.com/100?text=Pear' },
+    { name: 'strawberry', img: 'https://via.placeholder.com/100?text=Strawberry' }
+];
+
+// Duplicate the array to get pairs
+let gameGrid = [...cardsArray, ...cardsArray];
+
+// Shuffle the gameGrid
+gameGrid.sort(() => 0.5 - Math.random());
+
+// Create the game board
+const gameBoard = document.getElementById('game-board');
+
+// Variables to keep track of the game state
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+
+gameGrid.forEach(item => {
+    // Create card elements
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.dataset.name = item.name;
+
+    // Add the image inside the card
+    const frontFace = document.createElement('img');
+    frontFace.src = item.img;
+    card.appendChild(frontFace);
+
+    // Add event listener to each card
+    card.addEventListener('click', flipCard);
+
+    gameBoard.appendChild(card);
+});
+
+function flipCard() {
+    if (lockBoard) return;
+    if (this === firstCard) return; // Prevent double-clicking the same card
+
+    this.classList.add('flipped');
+
+    if (!firstCard) {
+        firstCard = this;
+    } else {
+        secondCard = this;
+        checkForMatch();
+    }
+}
+
+function checkForMatch() {
+    let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+
+    if (isMatch) {
+        disableCards();
+    } else {
+        unflipCards();
+    }
+}
+
+function disableCards() {
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+    resetBoard();
+}
+
+function unflipCards() {
+    lockBoard = true;
+    setTimeout(() => {
+        firstCard.classList.remove('flipped');
+        secondCard.classList.remove('flipped');
+        resetBoard();
+    }, 1000);
+}
+
+function resetBoard() {
+    [firstCard, secondCard, lockBoard] = [null, null, false];
+}
