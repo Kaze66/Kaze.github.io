@@ -57,14 +57,14 @@ h1 {
 
 <---Javascript--->
 const cartasArray = [
-    { nombre: 'manzana', img: 'https://via.placeholder.com/100?text=Apple' },
-    { nombre: 'platano', img: 'https://via.placeholder.com/100?text=Banana' },
-    { nombre: 'cereza', img: 'https://via.placeholder.com/100?text=Cherry' },
-    { nombre: 'uva', img: 'https://via.placeholder.com/100?text=Grape' },
-    { nombre: 'limon', img: 'https://via.placeholder.com/100?text=Lemon' },
-    { nombre: 'naranja', img: 'https://via.placeholder.com/100?text=Orange' },
-    { nombre: 'pera', img: 'https://via.placeholder.com/100?text=Pear' },
-    { nombre: 'fresa', img: 'https://via.placeholder.com/100?text=Strawberry' }
+    { nombre: 'coraje', img: 'https://easydrawingguides.com/wp-content/uploads/2022/04/how-to-draw-courage-the-cowardly-dog-featured-image-1200.png' },
+    { nombre: 'billy', img: 'https://pngfre.com/wp-content/uploads/the-grim-adventures-of-billy-and-mandy-10-768x563.png' },
+    { nombre: 'chicas', img: 'https://www.okchicas.com/wp-content/uploads/2020/08/Nuevo-Live-action-de-Las-Chicas-Superpoderosas.jpg' },
+    { nombre: 'dexter', img: 'https://th.bing.com/th/id/OIP.cENpyLGLCP91b1auDe2MLQHaFQ?rs=1&pid=ImgDetMain' },
+    { nombre: 'barrio', img: 'https://pa1.narvii.com/6051/a8fa2fb18ba5389b79fce8ba1d8a74925a5721c7_hq.gif' },
+    { nombre: 'edddy', img: 'https://th.bing.com/th/id/R.e28ab6b453429e4dfa1fc4999ccfcd2e?rik=579NV7ZXmmEb7g&pid=ImgRaw&r=0' },
+    { nombre: 'titan', img: 'https://yt3.ggpht.com/a/AGF-l7-o50EgR1dYcBS0Y-avowXkhAvrbPPlR3k_Mg=s900-mo-c-c0xffffffff-rj-k-no' },
+    { nombre: 'jhonny', img: 'https://shop.aquadigitizing.com/wp-content/uploads/2023/06/johnny-bravo-vector-cartoon-600x629.jpg' }
 ];
 
 // Duplicar las cartas para crear las parejas
