@@ -11,34 +11,38 @@ const cartasArray = [
 
 let juego1 = [...cartasArray, ...cartasArray];
 
+// Mezcla el juego
 juego1.sort(() => 0.5 - Math.random());
-
 
 const juegomesa = document.getElementById('juego-mesa');
 
+// Variables para el estado del juego
 let primeracarta = null;
 let segundacarta = null;
 let tercero = false;
 
 juego1.forEach(item => {
+    // Crear las cartas
     const carta = document.createElement('div');
     carta.classList.add('card');
     carta.dataset.name = item.name;
 
+    // Crear la imagen de la carta
     const caracarta = document.createElement('img');
     caracarta.src = item.img;
     carta.appendChild(caracarta);
 
-    carta.addEventListener('click', caracarta);
+    // Añadir el evento de clic
+    carta.addEventListener('click', saltacarta);
 
-    juegomesa.appendChild(card);
+    juegomesa.appendChild(carta);
 });
 
 function saltacarta() {
     if (tercero) return;
-    if (this === primeracarta) return;
+    if (this === primeracarta) return; // No permitir clic en la misma carta
 
-    this.classList.add('voltear');
+    this.classList.add('flipped'); // Voltear la carta
 
     if (!primeracarta) {
         primeracarta = this;
@@ -59,9 +63,9 @@ function chequiar() {
 }
 
 function disablecartas() {
-    primeracarta.removeEventListener('click', caracarta);
-    segundacarta.removeEventListener('click', caracarta);
-    resetBoard();
+    primeracarta.removeEventListener('click', saltacarta);
+    segundacarta.removeEventListener('click', saltacarta);
+    reseteartabla();
 }
 
 function unflipcartas() {
