@@ -1,50 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Memoria</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Juego de Memoria</h1>
+    <div id="tablero-juego"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<---CSS--->
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    margin: 20px;
+}
+
+#tablero-juego {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-gap: 10px;
+    justify-content: center;
+}
+
+.carta {
+    width: 100px;
+    height: 100px;
+    background-color: #888;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.carta img {
+    display: none;
+    width: 80%;
+    height: 80%;
+}
+
+.carta.volteada img {
+    display: block;
+}
+
+<---Javascript--->
 const cartasArray = [
-    { name: 'manzana', img: 'https://via.placeholder.com/100?text=Apple' },
-    { name: 'platano', img: 'https://via.placeholder.com/100?text=Banana' },
-    { name: 'cereza', img: 'https://via.placeholder.com/100?text=Cherry' },
-    { name: 'uva', img: 'https://via.placeholder.com/100?text=Grape' },
-    { name: 'limon', img: 'https://via.placeholder.com/100?text=Lemon' },
-    { name: 'naranja', img: 'https://via.placeholder.com/100?text=Orange' },
-    { name: 'pera', img: 'https://via.placeholder.com/100?text=Pear' },
-    { name: 'fresa', img: 'https://via.placeholder.com/100?text=Strawberry' }
+    { nombre: 'manzana', img: 'https://via.placeholder.com/100?text=Apple' },
+    { nombre: 'platano', img: 'https://via.placeholder.com/100?text=Banana' },
+    { nombre: 'cereza', img: 'https://via.placeholder.com/100?text=Cherry' },
+    { nombre: 'uva', img: 'https://via.placeholder.com/100?text=Grape' },
+    { nombre: 'limon', img: 'https://via.placeholder.com/100?text=Lemon' },
+    { nombre: 'naranja', img: 'https://via.placeholder.com/100?text=Orange' },
+    { nombre: 'pera', img: 'https://via.placeholder.com/100?text=Pear' },
+    { nombre: 'fresa', img: 'https://via.placeholder.com/100?text=Strawberry' }
 ];
 
-
+// Duplicar las cartas para crear las parejas
 let tableroJuego = [...cartasArray, ...cartasArray];
 
-
+// Barajar las cartas
 tableroJuego.sort(() => 0.5 - Math.random());
 
+// Crear el tablero de juego
+const contenedorJuego = document.getElementById('tablero-juego');
 
-const contenedorJuego = document.getElementById('game-board');
-
- 
+// Variables del estado del juego
 let primeraCarta = null;
 let segundaCarta = null;
 let bloqueoTablero = false;
 
+// Generar las cartas en el tablero
 tableroJuego.forEach(item => {
-
+    // Crear el elemento de la carta
     const carta = document.createElement('div');
-    carta.classList.add('card');
-    carta.dataset.name = item.name;
+    carta.classList.add('carta');
+    carta.dataset.nombre = item.nombre;
 
-    
+    // Añadir la imagen dentro de la carta
     const caraFrontal = document.createElement('img');
     caraFrontal.src = item.img;
     carta.appendChild(caraFrontal);
 
-    
+    // Añadir evento de clic
     carta.addEventListener('click', voltearCarta);
 
+    // Añadir la carta al tablero
     contenedorJuego.appendChild(carta);
 });
 
 function voltearCarta() {
     if (bloqueoTablero) return;
-    if (this === primeraCarta) return; // Evitar hacer clic dos veces en la misma carta
+    if (this === primeraCarta) return; // Evitar doble clic en la misma carta
 
-    this.classList.add('flipped');
+    this.classList.add('volteada');
 
     if (!primeraCarta) {
         primeraCarta = this;
@@ -55,13 +115,9 @@ function voltearCarta() {
 }
 
 function verificarCoincidencia() {
-    let esCoincidencia = primeraCarta.dataset.name === segundaCarta.dataset.name;
+    let esCoincidencia = primeraCarta.dataset.nombre === segundaCarta.dataset.nombre;
 
-    if (esCoincidencia) {
-        desactivarCartas();
-    } else {
-        desvoltearCartas();
-    }
+    esCoincidencia ? desactivarCartas() : desvoltearCartas();
 }
 
 function desactivarCartas() {
@@ -73,8 +129,8 @@ function desactivarCartas() {
 function desvoltearCartas() {
     bloqueoTablero = true;
     setTimeout(() => {
-        primeraCarta.classList.remove('flipped');
-        segundaCarta.classList.remove('flipped');
+        primeraCarta.classList.remove('volteada');
+        segundaCarta.classList.remove('volteada');
         reiniciarTablero();
     }, 1000);
 }
